@@ -1,9 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 export default function Index() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    website: '',
+    comment: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+    // Здесь будет логика отправки формы
+    alert('Заявка отправлена! Свяжемся с вами в течение часа.');
+    setFormData({ name: '', phone: '', website: '', comment: '' });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
   const workSteps = [
     {
       step: 1,
@@ -231,39 +256,144 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section with Form */}
       <section className="py-24 bg-gradient-to-r from-primary via-primary/90 to-secondary">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto text-white">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              Готовы увеличить продажи?
-            </h2>
-            <p className="text-xl mb-8 text-white/90">
-              Получите бесплатную консультацию и узнайте, как увеличить ROI вашей рекламы на 200%+
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6">
-                <Icon name="Phone" className="mr-2" size={20} />
-                Позвонить сейчас
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
-                <Icon name="Send" className="mr-2" size={20} />
-                Написать в Telegram
-              </Button>
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - CTA Text */}
+            <div className="text-white">
+              <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30">
+                🎯 Бесплатный аудит рекламы
+              </Badge>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+                Получите бесплатный аудит вашей рекламы
+              </h2>
+              <p className="text-xl mb-8 text-white/90 leading-relaxed">
+                Узнайте, как увеличить ROI на 200%+ и снизить стоимость клика. 
+                Детальный анализ за 24 часа — абсолютно бесплатно!
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <Icon name="CheckCircle" className="text-secondary" size={24} />
+                  <span>Анализ текущих кампаний</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Icon name="CheckCircle" className="text-secondary" size={24} />
+                  <span>Рекомендации по оптимизации</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Icon name="CheckCircle" className="text-secondary" size={24} />
+                  <span>Прогноз увеличения ROI</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Icon name="CheckCircle" className="text-secondary" size={24} />
+                  <span>План развития рекламы</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/20">
+                <div className="flex items-center gap-3">
+                  <Icon name="Clock" className="text-secondary" size={20} />
+                  <span className="text-sm">Ответ в течение часа</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Icon name="Shield" className="text-secondary" size={20} />
+                  <span className="text-sm">Гарантия результата</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Icon name="Award" className="text-secondary" size={20} />
+                  <span className="text-sm">5 лет опыта</span>
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-white/20">
-              <div className="flex items-center justify-center gap-3">
-                <Icon name="Clock" className="text-secondary" size={24} />
-                <span>Ответ в течение часа</span>
+
+            {/* Right side - Form */}
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Заявка на бесплатный аудит
+                </h3>
+                <p className="text-white/80">
+                  Заполните форму и получите анализ в течение 24 часов
+                </p>
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <Icon name="Shield" className="text-secondary" size={24} />
-                <span>Гарантия результата</span>
-              </div>
-              <div className="flex items-center justify-center gap-3">
-                <Icon name="Award" className="text-secondary" size={24} />
-                <span>5 лет опыта</span>
-              </div>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-white font-medium">
+                    Ваше имя *
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Как к вам обращаться?"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-white/90 border-white/20 text-gray-900 placeholder:text-gray-500 focus:bg-white"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-white font-medium">
+                    Телефон *
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+7 (999) 123-45-67"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-white/90 border-white/20 text-gray-900 placeholder:text-gray-500 focus:bg-white"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="website" className="text-white font-medium">
+                    Сайт или ссылка на рекламу
+                  </Label>
+                  <Input
+                    id="website"
+                    name="website"
+                    type="url"
+                    placeholder="https://ваш-сайт.ru"
+                    value={formData.website}
+                    onChange={handleInputChange}
+                    className="bg-white/90 border-white/20 text-gray-900 placeholder:text-gray-500 focus:bg-white"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="comment" className="text-white font-medium">
+                    Комментарий
+                  </Label>
+                  <Textarea
+                    id="comment"
+                    name="comment"
+                    placeholder="Расскажите о вашем бизнесе и текущих проблемах с рекламой..."
+                    value={formData.comment}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="bg-white/90 border-white/20 text-gray-900 placeholder:text-gray-500 focus:bg-white resize-none"
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full bg-white text-primary hover:bg-white/90 text-lg py-6 font-semibold"
+                >
+                  <Icon name="Send" className="mr-2" size={20} />
+                  Получить бесплатный аудит
+                </Button>
+
+                <p className="text-xs text-white/70 text-center leading-relaxed">
+                  Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                  и получением рекламных материалов
+                </p>
+              </form>
             </div>
           </div>
         </div>
